@@ -37,18 +37,18 @@ data.to_csv("output.csv")  # Save to CSV
 ✔️ Сustom data types  
 
 ## Available Data Types 🏗️  
-| Type                | Description                       |
-| ------------------- | --------------------------------- |
-| `Int(a, b)`            | Integer from `a` to `b`        |
-| `Float(a, b, d)`       | Number with `d` decimal places    |
-| `Str(n)`            | String of length `n`              |
-| `Date(start, end)`  | Random date within range          |
-| `Category([...])`   | Category from a list              |
-| `Job("type")` | Faker data (`male`, `female`, `both`) |
-| `Phone()` | Faker data  |
-| `Email("type")` | Faker data (`email`, `free`, `company`) |
-| `Name("type")` | Faker data (`male`, `female`, `both`) |
-| `Address("type")` | Faker data (`street`, `city`, `full`) |
+| Type               | Description                             |
+| ------------------ | --------------------------------------- |
+| `Int(a, b)`        | Integer from `a` to `b`                 |
+| `Float(a, b, d)`   | Number with `d` decimal places          |
+| `Str(n)`           | String of length `n`                    |
+| `Date(start, end)` | Random date within range                |
+| `Category([...])`  | Category from a list                    |
+| `Job("type")`      | Faker data (`male`, `female`, `both`)   |
+| `Phone()`          | Faker data                              |
+| `Email("type")`    | Faker data (`email`, `free`, `company`) |
+| `Name("type")`     | Faker data (`male`, `female`, `both`)   |
+| `Address("type")`  | Faker data (`street`, `city`, `full`)   |
 
 ## Data Export 📤  
 ```python
