@@ -6,6 +6,7 @@ __pycache__/
 .DS_Store
 .python-version
 pytest.ini
+.pypirc
 
 logs/
 *.log
