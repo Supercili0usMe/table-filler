@@ -20,10 +20,11 @@
 # args = ('male', 'female', 'both')
 
 # print(f"{", ".join(args)}")
-from src.tablefiller import *
+from tablefiller import *
+from tablefiller.generator import DataGenerator
 
-pop = Table(columns= {'int': Int(11),
-                      'reshetka': Float(5, 1),
+pop = Table(columns= {'int': Int(11, 80),
+                      'reshetka': Float(11, 80, 1),
                       'jfpoweij': Str(12, ' '),
                       'woerhiuf': Date('01.01.1488', '13.09.1488', '%d.%m.%Y'),
                       'wojief': Category(['3']),
@@ -37,7 +38,8 @@ pop = Table(columns= {'int': Int(11),
 generator = DataGenerator(pop)
 data = generator.generate_data(15)
 
-data.to_csv('output.csv')
-data.to_json('output.json')
-data.to_sql('output.sql')
-print(data)
+generated_data = GeneratedData([
+        {"name": "Test Name", "age": 25, "email": "test@email.com"},
+        {"name": "Test Name 2", "age": 30, "email": "test2@email.com"}
+    ])
+generated_data.to_csv('invalid/path/test.csv')

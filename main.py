@@ -1,4 +1,4 @@
-from src.tablefiller import *
+from tablefiller import *
 
 schema = Table(
     columns= {

@@ -1,9 +1,8 @@
-import csv
-import json
+import csv, json
 from typing import List
 from faker import Faker
-from src.types import *
-from src.schema import Table
+from .schema import *
+from .types import *
 
 try:
     import pandas as pd
@@ -13,10 +12,17 @@ except ImportError:
 
 
 class GeneratedData(list):
+    """Extended list class for data export functionality.
+    Расширенный класс списка с функциями экспорта данных."""
     def __init__(self, data: List[dict]):
         super().__init__(data)
     
     def to_csv(self, file_path: str) -> None:
+        """Exports data to CSV file.
+        Экспортирует данные в CSV файл.
+
+        Args:
+            `file_path` (str): Output file path / Путь к файлу"""
         if not self:
             raise ValueError("Отсутствуют данные для экспорта")
         try:
@@ -25,9 +31,14 @@ class GeneratedData(list):
                 writer.writeheader()
                 writer.writerows(self)
         except OSError as e:
-            print(f"Ошибка в записи файла: {e}")
+            raise OSError(f"Ошибка в записи файла: {e}")
 
     def to_json(self, file_path: str) -> None:
+        """Exports data to JSON file.
+        Экспортирует данные в JSON файл.
+
+        Args:
+            `file_path` (str): Output file path / Путь к файлу"""
         if not self:
             raise ValueError("Отсутствуют данные для экспорта")
         try:
@@ -37,6 +48,11 @@ class GeneratedData(list):
             print(f"Ошибка в записи файла: {e}")
 
     def to_sql(self, file_path: str) -> None:
+        """Exports data as SQL INSERT statements.
+        Экспортирует данные в виде SQL INSERT запросов.
+
+        Args:
+            `file_path` (str): Output file path / Путь к файлу"""
         if not self:
             raise ValueError("Нет данных для записи")
         
@@ -51,6 +67,11 @@ class GeneratedData(list):
             print(f"Ошибка записи файла: {e}")
 
     def to_pandas(self):
+        """Converts data to pandas DataFrame.
+        Конвертирует данные в pandas DataFrame.
+        
+        Returns:
+            DataFrame: Pandas DataFrame object"""
         if not PANDAS_AVAILABLE:
             raise ImportError("Модуль pandas не установлен. Установите его командой: pip install pandas")
         if not self:
@@ -58,24 +79,26 @@ class GeneratedData(list):
         return pd.DataFrame(self)
 
 class DataGenerator:
+    """Generates random data based on provided schema.
+    Генерирует случайные данные на основе схемы.
+
+    Args:
+        `schema` (Table): Table structure definition / Определение структуры таблицы"""
     def __init__(self, schema: Table):
-        """Класс для генерации случайных данных для заданной таблицы
-        ----
-        Параметры:
-            `schema` - созданная ранее структурная схема таблицы, определяемая
-            при помощи класса `Table()`
-        """
         if not isinstance(schema, Table):
             raise TypeError("Ожидается объект Table")
         self.__schema = schema
         self.__fake = Faker(schema.local)
     
     def generate_data(self, num_rows: int) -> GeneratedData:
-        """Функция для генерации случайных данных
-        ----
-        Параметры:
-            - `num_rows` - количество данных, необходимое для генерирования.
-        """
+        """Generates specified number of data rows.
+        Генерирует указанное количество строк данных.
+
+        Args:
+            `num_rows` (int): Number of rows to generate / Количество генерируемых строк
+            
+        Returns:
+            GeneratedData: Generated dataset / Сгенерированный набор данных"""
         if num_rows <= 0:
             raise ValueError(f"Число строк должно быть больше 0, сейчас: {num_rows}")
         

@@ -4,21 +4,24 @@ from datetime import datetime, timedelta
 
 
 class DataType(ABC):
-    """Базовый класс для всех типов данных."""
+    """Base abstract class for all data types.
+    Базовый абстрактный класс для всех типов данных."""
+
     @abstractmethod
     def generate(self):
         raise NotImplementedError
 
 class Int(DataType):
-    """Класс для работы с целочисленным типом данных.
-    ----
-    Параметры:
-        - `min_value` - нижняя граница для генерации.
-        - `max_value` - верхняя граница для генерации.
-    """
+    """Generates integer values within specified range.
+    Генерирует целые числа в указанном диапазоне.
+
+    Args:
+        `min_value` (int): Lower bound / Нижняя граница
+        `max_value` (int): Upper bound / Верхняя граница"""
+    
     def __init__(self, min_value: int, max_value: int):
         if max_value <= min_value:
-            raise ValueError(f"Нижняя граница должна быть меньше верхней границы, а сейчас '{self.max_value}' <= '{self.min_value}'")
+            raise ValueError(f"Нижняя граница должна быть меньше верхней границы, а сейчас '{max_value = }' <= '{min_value = }'")
         self.max_value = max_value
         self.min_value = min_value
             
@@ -27,17 +30,19 @@ class Int(DataType):
         return random.randint(self.min_value, self.max_value)
 
 class Float(DataType):
-    """Класс для работы с дробными числами.
-    ----
-    Параметры
-       - `min_value` - нижняя граница для генерации.
-       - `max_value` - верхняя граница для генерации.
-       - `precision` - количество символов после запятой."""
-    def __init__(self, min_value: int, max_value: int, precision: int):
+    """Generates float values within specified range.
+    Генерирует дробные числа в указанном диапазоне.
+
+    Args:
+        `min_value` (int | float): Lower bound / Нижняя граница
+        `max_value` (int | float): Upper bound / Верхняя граница
+        `precision` (int): Decimal places / Знаков после запятой"""
+    
+    def __init__(self, min_value: int | float, max_value: int | float, precision: int):
         if max_value <= min_value:
-            raise ValueError(f"Нижняя граница должна быть меньше верхней границы, а сейчас '{self.max_value}' <= '{self.min_value}'")
+            raise ValueError(f"Нижняя граница должна быть меньше верхней границы, а сейчас '{max_value}' <= '{min_value}'")
         if precision <= 0:
-            raise ValueError(f"Количество знаков после запятой должно быть положительным, а сейчас '{self.precision}'")
+            raise ValueError(f"Количество знаков после запятой должно быть положительным, а сейчас '{precision}'")
         
         self.max_value = max_value
         self.min_value = min_value
@@ -48,13 +53,12 @@ class Float(DataType):
         return round(random.uniform(self.min_value, self.max_value), self.precision)
 
 class Str(DataType):
-    """Класс для работы со строковыми данными.
-    ----
-    Параметры:
-        - `length` - максимальная длина для генерации строки,
-        - `prefix` - префикс, который добавляется в начало строк. Например, 
-        если вы хотите, чтобы происходила генерация названий товаров, например `'Товар фывлод'`,
-        то необходимо указать в качестве префикса `'Товар'`."""
+    """Generates string values with optional prefix.
+    Генерирует строковые значения с опциональным префиксом.
+
+    Args:
+        `length` (int): Max string length / Максимальная длина
+        `prefix` (str, optional): String prefix / Префикс строки"""
     def __init__(self, length: int, prefix: str =None):
         if length <= 0:
             raise ValueError("Длина не может быть отрицательной")
@@ -65,12 +69,13 @@ class Str(DataType):
         return fake.pystr(max_chars=self.length, prefix=self.prefix)
 
 class Date(DataType):
-    """Класс для работы с датами.
-    ----
-    Параметры:
-        - `start_date` - начальная дата, от которой будет происходить генерация,
-        - `end_date` - конечная дата, до которой будет происходить генерация,
-        - `format` - формат, в котором подаются даты."""
+    """Generates dates within specified range.
+    Генерирует даты в указанном диапазоне.
+
+    Args:
+        `start_date` (str): Start date / Начальная дата
+        `end_date` (str): End date / Конечная дата
+        `format` (str): Date format / Формат даты"""
     def __init__(self, start_date: str, end_date : str, format: str):
         try:
             self.start_date = datetime.strptime(start_date, format)
@@ -86,10 +91,11 @@ class Date(DataType):
         return random_date.strftime('%Y-%m-%d')
 
 class Category(DataType):
-    """Класс для работы с категориальными данными.
-    ----
-    Параметры:
-        - `categories` - список категорий, из которых необходимо выбирать данные."""
+    """Generates values from predefined categories.
+    Генерирует значения из предопределенных категорий.
+
+    Args:
+        `categories` (list): Available categories / Доступные категории"""
     def __init__(self, categories: list):
         if not categories:
             raise ValueError("Список категорий не может быть пустым")
@@ -99,10 +105,11 @@ class Category(DataType):
         return random.choice(self.categories)
 
 class Job(DataType):
-    """Класс для генерации рабочего места.
-    ----
-    Параметры:
-        - `type` - тип категории работы (`'male'`, `'female'`, `'both'`)."""
+    """Generates job titles.
+    Генерирует названия профессий.
+
+    Args:
+        `type` (str): 'male', 'female' or 'both'"""
     def __init__(self, type: str):
         self.__args = ('male', 'female', 'both')
         self.type = type.lower()
@@ -118,16 +125,17 @@ class Job(DataType):
             raise ValueError(f"Такого аргумента нету. Возможные аргументы: {", ".join(self.__args)}")
 
 class Phone(DataType):
-    """Класс для генерации номера телефона.
-    ----"""
+    """Generates phone numbers.
+    Генерирует номера телефонов."""
     def generate(self, fake):
         return fake.phone_number()
 
 class Email(DataType):
-    """Класс для генерации адресов электронных почт.
-    ----
-    Параметры:
-        - `type` - тип генерируемых почт (`'email'`, `'free'`, `'company'`)"""
+    """Generates email addresses.
+    Генерирует адреса электронной почты.
+
+    Args:
+        `type` (str): 'email', 'free' or 'company'"""
     def __init__(self, type: str):
         self.__args = ('email', 'free', 'company')
         self.type = type.lower()
@@ -143,10 +151,11 @@ class Email(DataType):
             raise ValueError(f"Такого аргумента нету. Возможные аргументы: {", ".join(self.__args)}")
 
 class Name(DataType):
-    """Класс для генерации случайных имен.
-    ----
-    Параметры:
-        - `type` - тип генерируемых имен (`'male'`, `'female'`, `'both'`)"""
+    """Generates person names.
+    Генерирует имена.
+
+    Args:
+        `type` (str): 'male', 'female' or 'both'"""
     
     def __init__(self, type: str):
         self.__args = ('male', 'female', 'both')
@@ -163,10 +172,11 @@ class Name(DataType):
             raise ValueError(f"Такого аргумента нету. Возможные аргументы: {", ".join(self.__args)}")
 
 class Address(DataType):
-    """Класс для генерации случайных адресов.
-    ----
-    Параметры:
-        - `type` - тип генерируемого адреса (`'street'`, `'city'`, `'full'`)"""
+    """Generates addresses.
+    Генерирует адреса.
+    
+    Args:
+        `type` (str): 'street', 'city' or 'full'"""
     def __init__(self, type: str):
         self.__args = ('street', 'city', 'full')
         self.type = type.lower()
