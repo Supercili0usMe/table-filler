@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tablefiller"
+version = "0.1.0"
+authors = [
+    {name = "Alexsander Shvayko", email = "alexsander.shvayko@gmail.com"}
+]
+description = "Library for generate random data for SQL tables"
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = ["faker", "pandas"]
+license = {text = "MIT"}
+
+[project.urls]
+Homepage = "https://github.com/Supercili0usMe/table-filler"
+Repository = "https://github.com/Supercili0usMe/table-filler"
