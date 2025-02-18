@@ -13,7 +13,7 @@ pip install git+https://github.com/Supercili0usMe/table-filler.git
 
 ## Quick Start 🚀  
 ```python
-from tablefiller import DataGenerator, TableSchema
+from tablefiller import DataGenerator, Table
 from tablefiller.types import Int, Str, Date
 
 schema = TableSchema(columns={
