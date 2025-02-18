@@ -16,11 +16,11 @@ pip install git+https://github.com/Supercili0usMe/table-filler.git
 from tablefiller import DataGenerator, Table
 from tablefiller.types import Int, Str, Date
 
-schema = TableSchema(columns={
+schema = Table(columns={
     "id": Int(5, 10),
     "name": Str(10),
     "created_at": Date("01.01.2022", "31.12.2023", '%d.%m.%Y')
-}, local="en_EN")
+}, local="en")
 
 generator = DataGenerator(schema)
 data = generator.generate_data(5)

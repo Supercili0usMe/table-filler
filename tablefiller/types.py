@@ -59,7 +59,7 @@ class Str(DataType):
     Args:
         `length` (int): Max string length / Максимальная длина
         `prefix` (str, optional): String prefix / Префикс строки"""
-    def __init__(self, length: int, prefix: str =None):
+    def __init__(self, length: int, prefix: str = ""):
         if length <= 0:
             raise ValueError("Длина не может быть отрицательной")
         self.length = length
